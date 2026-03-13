@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Quản Lý Sinh Viên</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animated">
+        <div class="bg-circle bg-circle-1"></div>
+        <div class="bg-circle bg-circle-2"></div>
+        <div class="bg-circle bg-circle-3"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>Quản Lý Sinh Viên</h1>
+                    <span class="logo-subtitle">Student Management System</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="header-info">
+                    <i class="fas fa-users"></i>
+                    <span id="totalStudents">Tổng số: 0 sinh viên</span>
+                </div>
+                <div class="header-time" id="currentTime">
+                    <i class="fas fa-clock"></i>
+                    <span></span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <nav class="nav-menu">
+                    <button class="nav-btn active" data-section="dashboard">
+                        <div class="nav-icon"><i class="fas fa-home"></i></div>
+                        <span>Tổng quan</span>
+                    </button>
+                    <button class="nav-btn" data-section="add-student">
+                        <div class="nav-icon"><i class="fas fa-user-plus"></i></div>
+                        <span>Thêm sinh viên</span>
+                    </button>
+                    <button class="nav-btn" data-section="student-list">
+                        <div class="nav-icon"><i class="fas fa-list"></i></div>
+                        <span>Danh sách SV</span>
+                    </button>
+                    <button class="nav-btn" data-section="search">
+                        <div class="nav-icon"><i class="fas fa-search"></i></div>
+                        <span>Tìm kiếm</span>
+                    </button>
+                    <button class="nav-btn" data-section="statistics">
+                        <div class="nav-icon"><i class="fas fa-chart-bar"></i></div>
+                        <span>Thống kê</span>
+                    </button>
+                </nav>
+                <div class="sidebar-footer">
+                    <div class="sidebar-version">
+                        <i class="fas fa-code-branch"></i> v2.0
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Dashboard Section -->
+                <section id="dashboard" class="section active">
+                    <div class="section-header">
+                        <h2><i class="fas fa-home"></i> Tổng Quan Hệ Thống</h2>
+                        <p class="section-desc">Theo dõi tình hình sinh viên trong hệ thống</p>
+                    </div>
+                    <div class="dashboard-cards">
+                        <div class="card card-total">
+                            <div class="card-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="card-info">
+                                <h3 id="dashTotalStudents">0</h3>
+                                <p>Tổng sinh viên</p>
+                            </div>
+                        </div>
+                        <div class="card card-excellent">
+                            <div class="card-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="card-info">
+                                <h3 id="dashExcellent">0</h3>
+                                <p>Xuất sắc</p>
+                            </div>
+                        </div>
+                        <div class="card card-good">
+                            <div class="card-icon">
+                                <i class="fas fa-medal"></i>
+                            </div>
+                            <div class="card-info">
+                                <h3 id="dashGood">0</h3>
+                                <p>Giỏi</p>
+                            </div>
+                        </div>
+                        <div class="card card-average">
+                            <div class="card-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="card-info">
+                                <h3 id="dashAverage">0</h3>
+                                <p>Khá</p>
+                            </div>
+                        </div>
+                        <div class="card card-weak">
+                            <div class="card-icon">
+                                <i class="fas fa-exclamation-circle"></i>
+                            </div>
+                            <div class="card-info">
+                                <h3 id="dashWeak">0</h3>
+                                <p>Trung bình / Yếu</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recent-section">
+                        <h3><i class="fas fa-clock"></i> Sinh viên mới thêm gần đây</h3>
+                        <div id="recentStudents" class="recent-list">
+                            <p class="no-data"><i class="fas fa-inbox"></i> Chưa có sinh viên nào</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Add Student Section -->
+                <section id="add-student" class="section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-user-plus"></i> Thêm Sinh Viên Mới</h2>
+                        <p class="section-desc">Điền đầy đủ thông tin vào form bên dưới</p>
+                    </div>
+                    <form id="studentForm" class="student-form">
+                        <div class="form-card">
+                            <div class="form-card-header">
+                                <i class="fas fa-id-card"></i> Thông tin cá nhân
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="studentId">
+                                        <i class="fas fa-hashtag"></i> Mã sinh viên <span class="required">*</span>
+                                    </label>
+                                    <input type="text" id="studentId" placeholder="VD: SV001" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="studentName">
+                                        <i class="fas fa-user"></i> Họ và tên <span class="required">*</span>
+                                    </label>
+                                    <input type="text" id="studentName" placeholder="VD: Nguyễn Văn A" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="studentDob">
+                                        <i class="fas fa-calendar-alt"></i> Ngày sinh <span class="required">*</span>
+                                    </label>
+                                    <input type="date" id="studentDob" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="studentGender">
+                                        <i class="fas fa-venus-mars"></i> Giới tính <span class="required">*</span>
+                                    </label>
+                                    <select id="studentGender" required>
+                                        <option value="">-- Chọn giới tính --</option>
+                                        <option value="Nam">Nam</option>
+                                        <option value="Nữ">Nữ</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-card">
+                            <div class="form-card-header">
+                                <i class="fas fa-address-book"></i> Thông tin liên hệ
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="studentClass">
+                                        <i class="fas fa-chalkboard-teacher"></i> Lớp <span class="required">*</span>
+                                    </label>
+                                    <input type="text" id="studentClass" placeholder="VD: CNTT01" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="studentEmail">
+                                        <i class="fas fa-envelope"></i> Email
+                                    </label>
+                                    <input type="email" id="studentEmail" placeholder="VD: email@example.com">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="studentPhone">
+                                        <i class="fas fa-phone-alt"></i> Số điện thoại
+                                    </label>
+                                    <input type="tel" id="studentPhone" placeholder="VD: 0901234567">
+                                </div>
+                                <div class="form-group">
+                                    <label for="studentAddress">
+                                        <i class="fas fa-map-marker-alt"></i> Địa chỉ
+                                    </label>
+                                    <input type="text" id="studentAddress" placeholder="VD: Hà Nội">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-card">
+                            <div class="form-card-header">
+                                <i class="fas fa-graduation-cap"></i> Điểm số
+                            </div>
+                            <div class="form-row form-row-3">
+                                <div class="form-group">
+                                    <label for="scoreMath">
+                                        <i class="fas fa-square-root-alt"></i> Điểm Toán
+                                    </label>
+                                    <input type="number" id="scoreMath" min="0" max="10" step="0.1" placeholder="0 - 10">
+                                </div>
+                                <div class="form-group">
+                                    <label for="scoreLiterature">
+                                        <i class="fas fa-book-open"></i> Điểm Văn
+                                    </label>
+                                    <input type="number" id="scoreLiterature" min="0" max="10" step="0.1" placeholder="0 - 10">
+                                </div>
+                                <div class="form-group">
+                                    <label for="scoreEnglish">
+                                        <i class="fas fa-globe-americas"></i> Điểm Anh
+                                    </label>
+                                    <input type="number" id="scoreEnglish" min="0" max="10" step="0.1" placeholder="0 - 10">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
+                                <i class="fas fa-plus-circle"></i> Thêm Sinh Viên
+                            </button>
+                            <button type="reset" class="btn btn-secondary btn-lg">
+                                <i class="fas fa-redo-alt"></i> Làm mới
+                            </button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- Student List Section -->
+                <section id="student-list" class="section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-list"></i> Danh Sách Sinh Viên</h2>
+                        <p class="section-desc">Quản lý và sắp xếp danh sách sinh viên</p>
+                    </div>
+                    <div class="list-controls">
+                        <div class="sort-controls">
+                            <label><i class="fas fa-sort-amount-down"></i> Sắp xếp:</label>
+                            <select id="sortBy">
+                                <option value="id">Mã SV</option>
+                                <option value="name">Tên</option>
+                                <option value="gpa">Điểm TB</option>
+                                <option value="class">Lớp</option>
+                            </select>
+                            <select id="sortOrder">
+                                <option value="asc">Tăng dần ↑</option>
+                                <option value="desc">Giảm dần ↓</option>
+                            </select>
+                            <button class="btn btn-primary" id="sortBtn">
+                                <i class="fas fa-sort"></i> Sắp xếp
+                            </button>
+                        </div>
+                        <div class="export-controls">
+                            <button class="btn btn-success" id="exportBtn">
+                                <i class="fas fa-file-export"></i> Xuất dữ liệu
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table id="studentTable">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Mã SV</th>
+                                    <th>Họ tên</th>
+                                    <th>Ngày sinh</th>
+                                    <th>Giới tính</th>
+                                    <th>Lớp</th>
+                                    <th>Điểm TB</th>
+                                    <th>Xếp loại</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentTableBody">
+                                <tr>
+                                    <td colspan="9" class="no-data"><i class="fas fa-inbox"></i> Chưa có sinh viên nào</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination" id="pagination">
+                    </div>
+                </section>
+
+                <!-- Search Section -->
+                <section id="search" class="section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-search"></i> Tìm Kiếm Sinh Viên</h2>
+                        <p class="section-desc">Tìm kiếm theo nhiều tiêu chí khác nhau</p>
+                    </div>
+                    <div class="search-form">
+                        <div class="search-box-main">
+                            <i class="fas fa-search search-icon-main"></i>
+                            <input type="text" id="searchKeyword" placeholder="Nhập mã SV, tên, hoặc lớp để tìm kiếm...">
+                        </div>
+                        <div class="search-filters">
+                            <div class="search-group">
+                                <label><i class="fas fa-filter"></i> Tìm theo</label>
+                                <select id="searchField">
+                                    <option value="all">Tất cả</option>
+                                    <option value="id">Mã SV</option>
+                                    <option value="name">Họ tên</option>
+                                    <option value="class">Lớp</option>
+                                </select>
+                            </div>
+                            <div class="search-group">
+                                <label><i class="fas fa-medal"></i> Xếp loại</label>
+                                <select id="searchRank">
+                                    <option value="all">Tất cả</option>
+                                    <option value="Xuất sắc">Xuất sắc</option>
+                                    <option value="Giỏi">Giỏi</option>
+                                    <option value="Khá">Khá</option>
+                                    <option value="Trung bình">Trung bình</option>
+                                    <option value="Yếu">Yếu</option>
+                                </select>
+                            </div>
+                            <div class="search-group">
+                                <label><i class="fas fa-venus-mars"></i> Giới tính</label>
+                                <select id="searchGender">
+                                    <option value="all">Tất cả</option>
+                                    <option value="Nam">Nam</option>
+                                    <option value="Nữ">Nữ</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="search-actions">
+                            <button class="btn btn-primary" id="searchBtn">
+                                <i class="fas fa-search"></i> Tìm kiếm
+                            </button>
+                            <button class="btn btn-secondary" id="resetSearchBtn">
+                                <i class="fas fa-redo-alt"></i> Đặt lại
+                            </button>
+                        </div>
+                    </div>
+                    <div class="search-results">
+                        <h3><i class="fas fa-list"></i> Kết quả tìm kiếm: <span id="searchCount">0</span> sinh viên</h3>
+                        <div class="table-container">
+                            <table id="searchResultTable">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Mã SV</th>
+                                        <th>Họ tên</th>
+                                        <th>Ngày sinh</th>
+                                        <th>Giới tính</th>
+                                        <th>Lớp</th>
+                                        <th>Điểm TB</th>
+                                        <th>Xếp loại</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="searchResultBody">
+                                    <tr>
+                                        <td colspan="9" class="no-data"><i class="fas fa-search"></i> Nhập thông tin để tìm kiếm</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Statistics Section -->
+                <section id="statistics" class="section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-chart-bar"></i> Thống Kê</h2>
+                        <p class="section-desc">Biểu đồ và số liệu thống kê chi tiết</p>
+                    </div>
+                    <div class="stats-overview">
+                        <div class="stat-card stat-avg">
+                            <div class="stat-icon"><i class="fas fa-calculator"></i></div>
+                            <div class="stat-info">
+                                <h4>Điểm trung bình chung</h4>
+                                <p id="statAvgGPA">0.00</p>
+                            </div>
+                        </div>
+                        <div class="stat-card stat-max">
+                            <div class="stat-icon"><i class="fas fa-arrow-up"></i></div>
+                            <div class="stat-info">
+                                <h4>Điểm cao nhất</h4>
+                                <p id="statMaxGPA">0.00</p>
+                            </div>
+                        </div>
+                        <div class="stat-card stat-min">
+                            <div class="stat-icon"><i class="fas fa-arrow-down"></i></div>
+                            <div class="stat-info">
+                                <h4>Điểm thấp nhất</h4>
+                                <p id="statMinGPA">0.00</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stats-charts">
+                        <div class="chart-container">
+                            <h4><i class="fas fa-chart-pie"></i> Phân bố xếp loại</h4>
+                            <div class="chart-wrapper">
+                                <canvas id="rankChart"></canvas>
+                            </div>
+                            <div id="rankLegend" class="chart-legend"></div>
+                        </div>
+                        <div class="chart-container">
+                            <h4><i class="fas fa-chart-bar"></i> Thống kê theo lớp</h4>
+                            <div class="chart-wrapper">
+                                <canvas id="classChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stats-table">
+                        <h4><i class="fas fa-table"></i> Thống kê chi tiết theo lớp</h4>
+                        <table id="statsTable">
+                            <thead>
+                                <tr>
+                                    <th>Lớp</th>
+                                    <th>Số lượng</th>
+                                    <th>Điểm TB</th>
+                                    <th>Xuất sắc</th>
+                                    <th>Giỏi</th>
+                                    <th>Khá</th>
+                                    <th>TB/Yếu</th>
+                                </tr>
+                            </thead>
+                            <tbody id="statsTableBody">
+                                <tr>
+                                    <td colspan="7" class="no-data">Chưa có dữ liệu</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p><i class="fas fa-heart" style="color: #ef476f;"></i> Hệ thống Quản lý Sinh viên &copy; 2026 &mdash; BTL Lập trình nâng cao</p>
+        </footer>
+    </div>
+
+    <!-- Modal for Edit/View -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Chi tiết sinh viên</h3>
+                <button class="close-btn" id="closeModal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" id="modalBody">
+            </div>
+            <div class="modal-footer" id="modalFooter">
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Các file thuật toán (tiếng Việt) -->
+    <script src="js/CauTrucMangDong.js"></script>
+    <script src="js/ThuatToanSapXep.js"></script>
+    <script src="js/ThuatToanTimKiem.js"></script>
+    <script src="js/ThuatToanThongKe.js"></script>
+
+    <!-- Các file chức năng chính (tiếng Việt) -->
+    <script src="js/MangDong.js"></script>
+    <script src="js/SinhVien.js"></script>
+    <script src="js/QuanLySinhVien.js"></script>
+    <script src="js/DieuKhienGiaoDien.js"></script>
+    <script src="js/UngDung.js"></script>
+    <script>
+        // Live clock
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+            const dateStr = now.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            const el = document.querySelector('#currentTime span');
+            if (el) el.textContent = timeStr + ' • ' + dateStr;
+        }
+        updateClock();
+        setInterval(updateClock, 30000);
+    </script>
+</body>
+</html>
